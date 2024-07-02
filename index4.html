@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learning Technology Game</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                display: flex;
+                width: 80%;
+                height: 80%;
+                background-color: #fff;
+                border: 1px solid #ccc;
+            }
+            .screen {
+                flex: 1;
+                padding: 20px;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            .screen.active {
+                display: flex;
+            }
+            .link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .button {
+                padding: 10px 20px;
+                background-color: #f0c040;
+                border: none;
+                cursor: pointer;
+            }
+            .button:disabled {
+                background-color: #ddd;
+                cursor: not-allowed;
+            }
+            .choices {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                margin-top: 20px;
+            }
+            .choice-button {
+                padding: 10px 20px;
+                background-color: #bbb;
+                border: none;
+                cursor: pointer;
+            }
+            .status {
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                padding: 0 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="screen screen1 active">
+                <div class="status">
+                    <div>Score: <span id="score">0</span>/3</div>
+                    <div>Life: <span id="life">3</span>/3</div>
+                </div>
+                <h1>A Game to Learn Technology</h1>
+                <div class="link" onclick="startGame()">START &gt;&gt;</div>
+            </div>
+            <div class="screen screen2">
+                <div class="status">
+                    <div>Score: <span id="score2">0</span></div>
+                    <div>Life: <span id="life2">3</span></div>
+                </div>
+                <button class="button" onclick="goToScreen3()">SHUFFLE</button>
+            </div>
+            <div class="screen screen3">
+                <div class="status">
+                    <div>Score: <span id="score3">0</span></div>
+                    <div>Life: <span id="life3">3</span></div>
+                </div>
+                <h2>Which pokeball contains the technology?</h2>
+                <div class="choices">
+                    <button
+                        class="choice-button"
+                        onclick="makeChoice('RabsCA')"
+                    >
+                        RabsCA
+                    </button>
+                    <button class="choice-button" onclick="makeChoice('Astro')">
+                        Astro
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let score = 0;
+            let life = 3;
+
+            function updateStatus() {
+                document.getElementById("score").innerText = score;
+                document.getElementById("life").innerText = life;
+                document.getElementById("score2").innerText = score;
+                document.getElementById("life2").innerText = life;
+                document.getElementById("score3").innerText = score;
+                document.getElementById("life3").innerText = life;
+            }
+
+            function startGame() {
+                document.querySelector(".screen1").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+                updateStatus();
+            }
+
+            function goToScreen3() {
+                document.querySelector(".screen2").classList.remove("active");
+                document.querySelector(".screen3").classList.add("active");
+                updateStatus();
+            }
+
+            function makeChoice(choice) {
+                if (choice === "Astro") {
+                    score += 1;
+                } else {
+                    life -= 1;
+                }
+
+                if (life <= 0) {
+                    alert("Game Over! You have no more lives.");
+                    resetGame();
+                } else if (score >= 3) {
+                    alert("Congratulations! You won the game.");
+                    resetGame();
+                } else {
+                    alert("You chose: " + choice);
+                    goToScreen2();
+                }
+                updateStatus();
+            }
+
+            function goToScreen2() {
+                document.querySelector(".screen3").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+            }
+
+            function resetGame() {
+                score = 0;
+                life = 3;
+                document.querySelector(".screen3").classList.remove("active");
+                document.querySelector(".screen1").classList.add("active");
+                updateStatus();
+            }
+        </script>
+    </body>
+</html>

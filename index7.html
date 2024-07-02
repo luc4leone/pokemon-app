@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learning Technology Game</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                display: flex;
+                width: 80%;
+                height: 80%;
+                background-color: #fff;
+                border: 1px solid #ccc;
+            }
+            .screen {
+                flex: 1;
+                padding: 20px;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            .screen.active {
+                display: flex;
+            }
+            .link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .button {
+                padding: 10px 20px;
+                background-color: #f0c040;
+                border: none;
+                cursor: pointer;
+            }
+            .button:disabled {
+                background-color: #ddd;
+                cursor: not-allowed;
+            }
+            .choices {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                margin-top: 20px;
+            }
+            .choice-button {
+                padding: 10px 20px;
+                background-color: #bbb;
+                border: none;
+                cursor: pointer;
+            }
+            .status {
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                padding: 0 20px;
+            }
+            @keyframes shuffle {
+                0% {
+                    transform: translateX(0);
+                }
+                25% {
+                    transform: translateX(-10px);
+                }
+                50% {
+                    transform: translateX(10px);
+                }
+                75% {
+                    transform: translateX(-10px);
+                }
+                100% {
+                    transform: translateX(0);
+                }
+            }
+            .shuffling {
+                animation: shuffle 0.5s ease-in-out infinite;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="screen screen1 active">
+                <div class="status">
+                    <div>Score: <span id="score">0</span>/3</div>
+                    <div>Life: <span id="life">3</span>/3</div>
+                </div>
+                <h1>A Game to Learn Technology</h1>
+                <div class="link" onclick="startGame()">START &gt;&gt;</div>
+            </div>
+            <div class="screen screen2">
+                <div class="status">
+                    <div>Score: <span id="score2">0</span></div>
+                    <div>Life: <span id="life2">3</span></div>
+                </div>
+                <button class="button" id="shuffleButton" onclick="shuffle()">
+                    SHUFFLE
+                </button>
+            </div>
+            <div class="screen screen3">
+                <div class="status">
+                    <div>Score: <span id="score3">0</span></div>
+                    <div>Life: <span id="life3">3</span></div>
+                </div>
+                <h2>Which pokeball contains the technology?</h2>
+                <div class="choices">
+                    <button
+                        class="choice-button"
+                        id="choice1"
+                        onclick="makeChoice('choice1')"
+                    ></button>
+                    <button
+                        class="choice-button"
+                        id="choice2"
+                        onclick="makeChoice('choice2')"
+                    ></button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let technologies = ["Node", "Express", "MongoDB"];
+            let pokemons = ["Pikachu", "Charmander", "Bulbasaur"];
+
+            let score = 0;
+            let life = 3;
+            let choices = [];
+
+            function updateStatus() {
+                document.getElementById("score").innerText = score;
+                document.getElementById("life").innerText = life;
+                document.getElementById("score2").innerText = score;
+                document.getElementById("life2").innerText = life;
+                document.getElementById("score3").innerText = score;
+                document.getElementById("life3").innerText = life;
+            }
+
+            function startGame() {
+                document.querySelector(".screen1").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+                updateStatus();
+            }
+
+            function shuffle() {
+                const shuffleButton = document.getElementById("shuffleButton");
+                shuffleButton.classList.add("shuffling");
+
+                setTimeout(() => {
+                    const randomTechIndex = Math.floor(
+                        Math.random() * technologies.length
+                    );
+                    const randomPokemonIndex = Math.floor(
+                        Math.random() * pokemons.length
+                    );
+                    const randomTech = technologies[randomTechIndex];
+                    const randomPokemon = pokemons[randomPokemonIndex];
+
+                    choices = shuffleArray([randomTech, randomPokemon]);
+
+                    document.getElementById("choice1").innerText = choices[0];
+                    document.getElementById("choice2").innerText = choices[1];
+
+                    shuffleButton.classList.remove("shuffling");
+                    goToScreen3();
+                }, 2000); // Duration of the shuffle animation
+            }
+
+            function goToScreen3() {
+                document.querySelector(".screen2").classList.remove("active");
+                document.querySelector(".screen3").classList.add("active");
+                updateStatus();
+            }
+
+            function makeChoice(choice) {
+                const chosenItem = document.getElementById(choice).innerText;
+
+                if (technologies.includes(chosenItem)) {
+                    score += 1;
+                    technologies = technologies.filter(
+                        (item) => item !== chosenItem
+                    );
+                } else {
+                    life -= 1;
+                    pokemons = pokemons.filter((item) => item !== chosenItem);
+                }
+
+                if (life <= 0) {
+                    alert("Game Over! You have no more lives.");
+                    resetGame();
+                } else if (score >= 3) {
+                    alert("Congratulations! You won the game.");
+                    resetGame();
+                } else {
+                    alert("You chose: " + chosenItem);
+                    goToScreen2();
+                }
+                updateStatus();
+            }
+
+            function goToScreen2() {
+                document.querySelector(".screen3").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+            }
+
+            function resetGame() {
+                score = 0;
+                life = 3;
+                technologies = ["Node", "Express", "MongoDB"];
+                pokemons = ["Pikachu", "Charmander", "Bulbasaur"];
+                document.querySelector(".screen3").classList.remove("active");
+                document.querySelector(".screen1").classList.add("active");
+                updateStatus();
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        </script>
+    </body>
+</html>

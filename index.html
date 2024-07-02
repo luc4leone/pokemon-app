@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learning Technology Game</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                display: flex;
+                width: 80%;
+                height: 80%;
+                background-color: #fff;
+                border: 1px solid #ccc;
+            }
+            .screen {
+                flex: 1;
+                padding: 20px;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .screen.active {
+                display: flex;
+            }
+            .screen1,
+            .screen2 {
+                position: relative;
+            }
+            .explanation {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                color: purple;
+            }
+            .link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .button {
+                padding: 10px 20px;
+                background-color: #f0c040;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="screen screen1 active">
+                <div class="explanation">score 0/3<br />disabled</div>
+                <div class="explanation" style="right: 10px; left: auto">
+                    life 3/3<br />disabled
+                </div>
+                <h1>A Game to Learn Technology</h1>
+                <div class="link" onclick="startGame()">START &gt;&gt;</div>
+            </div>
+            <div class="screen screen2">
+                <div class="explanation">score 0<br />enabled</div>
+                <div class="explanation" style="right: 10px; left: auto">
+                    life 3/3<br />enabled
+                </div>
+                <button class="button" onclick="shuffle()">SHUFFLE</button>
+            </div>
+        </div>
+
+        <script>
+            function startGame() {
+                document.querySelector(".screen1").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+            }
+
+            function shuffle() {
+                alert("Shuffle clicked!");
+            }
+        </script>
+    </body>
+</html>

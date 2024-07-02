@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learning Technology Game</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f0f0f0;
+            }
+            .container {
+                display: flex;
+                width: 80%;
+                height: 80%;
+                background-color: #fff;
+                border: 1px solid #ccc;
+            }
+            .screen {
+                flex: 1;
+                padding: 20px;
+                display: none;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .screen.active {
+                display: flex;
+            }
+            .link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .button {
+                padding: 10px 20px;
+                background-color: #f0c040;
+                border: none;
+                cursor: pointer;
+            }
+            .button:disabled {
+                background-color: #ddd;
+                cursor: not-allowed;
+            }
+            .choices {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+                margin-top: 20px;
+            }
+            .choice-button {
+                padding: 10px 20px;
+                background-color: #bbb;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="screen screen1 active">
+                <h1>A Game to Learn Technology</h1>
+                <div class="link" onclick="startGame()">START &gt;&gt;</div>
+            </div>
+            <div class="screen screen2">
+                <button class="button" onclick="goToScreen3()">SHUFFLE</button>
+            </div>
+            <div class="screen screen3">
+                <h2>Which pokeball contains the technology?</h2>
+                <div class="choices">
+                    <button
+                        class="choice-button"
+                        onclick="makeChoice('RabsCA')"
+                    >
+                        RabsCA
+                    </button>
+                    <button class="choice-button" onclick="makeChoice('Astro')">
+                        Astro
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function startGame() {
+                document.querySelector(".screen1").classList.remove("active");
+                document.querySelector(".screen2").classList.add("active");
+            }
+
+            function goToScreen3() {
+                document.querySelector(".screen2").classList.remove("active");
+                document.querySelector(".screen3").classList.add("active");
+            }
+
+            function makeChoice(choice) {
+                alert("You chose: " + choice);
+                // Here you can add the logic to check if the choice is correct and proceed accordingly
+            }
+        </script>
+    </body>
+</html>
